@@ -54,8 +54,10 @@ class Module_Army extends Base_Module
             if(is_numeric($key) && $var != 0)
             {
                 $totalCost += $this->getCost($key) * $var;
-                $q = $this->db->execute('SELECT owned FROM <ezrpg>armies_trained WHERE army_id = '.$key);
+                $q = $this->db->execute('SELECT owned FROM <ezrpg>armies_trained WHERE army_id = '.$key .' and player_id='.$this->player->id);
                 $owned = $this->db->fetch($q)->owned;
+                if($owned == null)
+                    $owned = 0;
                 if($owned !== $_POST[$key.'_owned'])
                     $this->setMessage("Don't try changing the owned amount", "warn");
 
@@ -78,8 +80,10 @@ class Module_Army extends Base_Module
         {
             if(is_numeric($key) && $var != 0)
             {
-                $q = $this->db->execute('SELECT owned FROM <ezrpg>armies_trained WHERE army_id = '.$key);
+                $q = $this->db->execute('SELECT owned FROM <ezrpg>armies_trained WHERE army_id = '.$key.' and player_id=' . $this->player->id);
                 $owned = $this->db->fetch($q)->owned;
+                if($owned == null)
+                    $owned = 0;
                 if($owned !== $_POST[$key.'_owned'])
                     $this->setMessage("Don't try changing the owned amount", "warn");
                 $items['item_'.$key] = array('id'=> $key, 'owned'=> $owned, 'amount'=>$var);
@@ -115,31 +119,5 @@ class Module_Army extends Base_Module
     private function getCost($item){
         $q = $this->db->execute('SELECT cost from <ezrpg>armies WHERE id='. $item);
         return $this->db->fetch($q)->cost;
-    }
-
-    public function install($id=0){
-        $this->db->execute("CREATE TABLE IF NOT EXISTS `<ezrpg>armies` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `type` enum('civilian','worker','offense','defense','spyoffense','spydefense') NOT NULL,
-  `bonus` int(11) NOT NULL,
-  `cost` int(11) NOT NULL,
-  `upgradeID` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;");
-        $this->db->execute('CREATE TABLE IF NOT EXISTS `<ezrpg>armies_trained` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `player_id` int(11) NOT NULL,
-  `army_id` int(11) NOT NULL,
-  `owned` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;');
-        $this->container['menu']->add_menu(1,'Training','Training', '', 'index.php?mod=Army', 0, $id);
-
-        //TODO add settings for the citizens/starting stats.
-    }
-
-    public function uninstall(){
-        $this->db->execute('DROP TABLE IF EXISTS `<ezrpg>armies_trained`; DROP TABLE IF EXISTS `<ezrpg>armies`;');
     }
 }
