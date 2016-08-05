@@ -2,16 +2,11 @@
 
 defined('IN_EZRPG') or exit;
 
-$hooks->add_hook('register_after', 'setstat');
+$hooks->add_hook('register_after', 'start_citizens');
 
-function hook_setstat($container, $args = 0)
+function hook_start_citizens($container, $args = 0)
 {
-    $gold = $container['settings']->setting['registration']['newgold']['value'];
-    $str =  $container['settings']->setting['registration']['strength']['value'];
-    $vit = $container['settings']->setting['registration']['vitality']['value'];
-    $agi = $container['settings']->setting['registration']['agility']['value'];
-    $dex = $container['settings']->setting['registration']['dexerity']['value'];
-    $container['db']->update('<ezrpg>players_meta', array('money'=>$gold, 'strength'=>$str, 'vitality'=>$vit, 'agility'=>$agi, 'dexterity'=>$dex), 'pid='.$args);
+    $container['db']->insert('<ezrpg>armies_trained', array('army_id'=>1, 'owned'=>20, 'player_id='.$args));
     return $args;
 }
 
