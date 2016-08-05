@@ -1,0 +1,4 @@
+:Module Title: Profile Module
+:Module Version: 1.0.0
+:Module Description: ezRPGGame, A simple profile module
+:Module Author: Tim

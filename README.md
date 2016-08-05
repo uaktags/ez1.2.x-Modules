@@ -1,1 +1,2 @@
-# ez1.2.x-Modules
+# Profile Module
+### Simple Profile module to view other players
