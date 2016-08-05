@@ -55,8 +55,10 @@ class Module_Items extends Base_Module
             if(is_numeric($key) && $var != 0)
             {
                 $totalCost += $this->getCost($key) * $var;
-                $q = $this->db->execute('SELECT owned FROM <ezrpg>item_inventory WHERE item_id = '.$key);
+                $q = $this->db->execute('SELECT owned FROM <ezrpg>item_inventory WHERE item_id = '.$key. ' AND player_id='. $this->player->id);
                 $owned = $this->db->fetch($q)->owned;
+                if($owned == null)
+                    $owned = 0;
                 if($owned !== $_POST[$key.'_owned'])
                     $this->setMessage("Don't try changing the owned amount", "warn");
                 $items['item_'.$key] = array('id'=> $key, 'owned'=> $owned, 'amount'=>$var);
@@ -79,8 +81,10 @@ class Module_Items extends Base_Module
             if(is_numeric($key) && $var != 0)
             {
                 $totalCost += $this->getRefund($key) * $var;
-                $q = $this->db->execute('SELECT owned FROM <ezrpg>item_inventory WHERE item_id = '.$key);
+                $q = $this->db->execute('SELECT owned FROM <ezrpg>item_inventory WHERE item_id = '.$key.'. and player_id=' . $this->player->id);
                 $owned = $this->db->fetch($q)->owned;
+                if($owned == null)
+                    $owned = 0;
                 if($owned !== $_POST[$key.'_owned'])
                     $this->setMessage("Don't try changing the owned amount", "warn");
                 $items['item_'.$key] = array('id'=> $key, 'owned'=> $owned, 'amount'=>$var);
