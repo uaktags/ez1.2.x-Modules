@@ -29,8 +29,8 @@ function hook_store_info($container, $args = 0)
         $id=$args->id;
     }
     $date = date('Y-m-d H:i:s');
-    $strSQL = "INSERT INTO <ezrpg>players_tracking(tm, ref, agent, ip, host_name, pid)VALUES('$date','$ref','$agent','$ip','$host_name','$id')";
-    $container['db']->execute($strSQL);
+    $strSQL = "INSERT INTO <ezrpg>players_tracking(tm, ref, agent, ip, host_name, pid)VALUES(?,?,?,?,?,?)";
+    $res = $container['db']->execute($strSQL, array($date, $ref, $agent, $ip, $host_name, $id));
 
     return $args;
 }
