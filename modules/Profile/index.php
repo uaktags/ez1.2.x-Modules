@@ -32,8 +32,8 @@ class Module_Profile extends Base_Module
             header("Location: index.php?mod=Members");
         }
 
-        $playerquery = "SELECT `<ezrpg>players`.id, `<ezrpg>players`.username, `<ezrpg>players_meta`.* FROM <ezrpg>players INNER JOIN <ezrpg>players_meta on `<ezrpg>players_meta`.pid = `<ezrpg>players`.id WHERE `<ezrpg>players`.username = '" . $player . "'";
-        $playerres = $this->db->execute($playerquery);
+        $playerquery = "SELECT `<ezrpg>players`.id, `<ezrpg>players`.username, `<ezrpg>players_meta`.* FROM <ezrpg>players INNER JOIN <ezrpg>players_meta on `<ezrpg>players_meta`.pid = `<ezrpg>players`.id WHERE `<ezrpg>players`.username = ?";
+        $playerres = $this->db->execute($playerquery, array($player));
         $player = $this->db->fetchAll($playerres);
 
         $this->tpl->assign('avatar', false);
