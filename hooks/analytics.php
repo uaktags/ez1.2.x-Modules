@@ -28,7 +28,8 @@ function hook_store_info($container, $args = 0)
     else{
         $id=$args->id;
     }
-    $strSQL = "INSERT INTO <ezrpg>players_tracking(tm, ref, agent, ip, host_name, pid)VALUES(curdate(),'$ref','$agent','$ip','$host_name','". $id."')";
+    $date = date('Y-m-d H:i:s');
+    $strSQL = "INSERT INTO <ezrpg>players_tracking(tm, ref, agent, ip, host_name, pid)VALUES('$date','$ref','$agent','$ip','$host_name','$id')";
     $container['db']->execute($strSQL);
 
     return $args;
